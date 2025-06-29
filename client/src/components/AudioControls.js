@@ -11,13 +11,13 @@ const AudioControls = ({ text }) => {
   };
 
   return (
-    <div className="flex gap-2">
+    <div className="audio-controls">
       {!isSpeaking && (
-        <button onClick={speakText} className="bg-green-500 text-white px-4 py-2 rounded">▶️ Play</button>
+        <button onClick={speakText} className="audio-btn play">▶️ Play</button>
       )}
-      <button onClick={() => speechSynthesis.pause()} className="bg-yellow-500 text-white px-4 py-2 rounded">⏸️ Pause</button>
-      <button onClick={() => speechSynthesis.resume()} className="bg-blue-500 text-white px-4 py-2 rounded">🔁 Resume</button>
-      <button onClick={() => { speechSynthesis.cancel(); setIsSpeaking(false); }} className="bg-red-500 text-white px-4 py-2 rounded">⏹️ Stop</button>
+      <button onClick={() => speechSynthesis.pause()} className="audio-btn pause">⏸️ Pause</button>
+      <button onClick={() => speechSynthesis.resume()} className="audio-btn resume">🔁 Resume</button>
+      <button onClick={() => { speechSynthesis.cancel(); setIsSpeaking(false); }} className="audio-btn stop">⏹️ Stop</button>
     </div>
   );
 };

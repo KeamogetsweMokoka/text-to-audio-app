@@ -1,23 +1,32 @@
 import React from 'react';
-import AudioControls from './AudioControls';
-import DownloadButton from './DownloadButton';
+import { useLocation } from 'react-router-dom';
+import AudioControls from '../components/AudioControls';
+import DownloadButton from '../components/DownloadButton';
 
-function ResultPage({ text, fileName, goBack }) {
-  return (
-    <div className="p-6 max-w-4xl mx-auto space-y-6">
-      <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold text-gray-800">📄 {fileName}</h2>
-        <button onClick={goBack} className="text-blue-600 hover:underline text-sm">⬅️ Upload another file</button>
+const ResultPage = () => {
+  const location = useLocation();
+  const { text, fileName } = location.state || {};
+
+  if (!text || !fileName) {
+    return (
+      <div className="result-error">
+        No file uploaded. Please go back and upload a file.
       </div>
+    );
+  }
 
-      <AudioControls text={text} />
-      <DownloadButton text={text} fileName={fileName} />
-
-      <div className="bg-white p-6 rounded shadow border border-gray-200 text-sm whitespace-pre-wrap overflow-y-auto max-h-[80vh]">
-        {text}
+  return (
+    <div className="result-root">
+      <div className="result-container">
+        <h2 className="result-title">📄 {fileName}</h2>
+        <AudioControls text={text} />
+        <DownloadButton text={text} fileName={fileName} />
+        <pre className="result-pre">
+          {text}
+        </pre>
       </div>
     </div>
   );
-}
+};
 
 export default ResultPage;

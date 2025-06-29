@@ -1,31 +1,19 @@
-import React, { useState } from 'react';
+// src/App.js
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import UploadPage from './components/UploadPage';
 import ResultPage from './components/ResultPage';
+import './styles.css';
 
-function App() {
-  const [extractedText, setExtractedText] = useState('');
-  const [fileName, setFileName] = useState('');
-  const [view, setView] = useState('upload'); // 'upload' or 'result'
-
-  const handleUploadComplete = (text, name) => {
-    setExtractedText(text);
-    setFileName(name);
-    setView('result');
-  };
-
+const App = () => {
   return (
-    <div className="min-h-screen bg-gray-100">
-      {view === 'upload' ? (
-        <UploadPage onUploadComplete={handleUploadComplete} />
-      ) : (
-        <ResultPage
-          text={extractedText}
-          fileName={fileName}
-          goBack={() => setView('upload')}
-        />
-      )}
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<UploadPage />} />
+        <Route path="/result" element={<ResultPage />} />
+      </Routes>
+    </Router>
   );
-}
+};
 
 export default App;

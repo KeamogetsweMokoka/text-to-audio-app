@@ -27,7 +27,7 @@ const DownloadButton = ({ text, fileName }) => {
 
 
   return (
-    <button onClick={downloadPollyAudio} className="bg-indigo-600 text-white px-4 py-2 rounded">
+    <button onClick={downloadPollyAudio} className="download-btn">
       ⬇️ Download Audio (Amazon Polly)
     </button>
   );
