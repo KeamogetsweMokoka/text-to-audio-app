@@ -1,10 +1,12 @@
 import React, { useState, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useDropzone } from 'react-dropzone';
 import axios from 'axios';
 import '../styles.css';
 
-function UploadPage({ onUploadComplete }) {
+function UploadPage() {
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop: async (acceptedFiles) => {
       const file = acceptedFiles[0];
@@ -16,7 +18,7 @@ function UploadPage({ onUploadComplete }) {
       setIsLoading(true);
       try {
         const res = await axios.post('http://localhost:5000/upload', formData);
-        onUploadComplete(res.data.text, res.data.originalname);
+        navigate('/result', { state: { text: res.data.text, fileName: res.data.originalname } });
       } catch (err) {
         console.error(err);
         alert('Upload failed.');
@@ -39,7 +41,7 @@ function UploadPage({ onUploadComplete }) {
         <h2>Let Your Files Speak to You</h2>
         <p>
           Transform any document into immersive audio in seconds. Drop a file and
-          we’ll give it a voice you’ll love to listen to.
+          we'll give it a voice you'll love to listen to.
         </p>
       </section>
 

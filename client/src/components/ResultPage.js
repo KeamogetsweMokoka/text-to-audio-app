@@ -5,7 +5,8 @@ import DownloadButton from '../components/DownloadButton';
 
 const ResultPage = () => {
   const location = useLocation();
-  const { text, fileName } = location.state || {};
+  const { text, fileName, fileUrl } = location.state || {};
+  const isPdf = fileName && fileName.toLowerCase().endsWith('.pdf');
 
   if (!text || !fileName) {
     return (
@@ -21,9 +22,19 @@ const ResultPage = () => {
         <h2 className="result-title">📄 {fileName}</h2>
         <AudioControls text={text} />
         <DownloadButton text={text} fileName={fileName} />
-        <pre className="result-pre">
-          {text}
-        </pre>
+        {isPdf && fileUrl ? (
+          <iframe
+            src={fileUrl}
+            title="PDF Preview"
+            width="100%"
+            height="600px"
+            style={{ border: '1px solid #ccc', borderRadius: '8px', marginTop: '1rem' }}
+          />
+        ) : (
+          <pre className="result-pre">
+            {text}
+          </pre>
+        )}
       </div>
     </div>
   );

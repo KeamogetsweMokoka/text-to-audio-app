@@ -190,6 +190,7 @@ body {
   background: #f9fafb; /* gray-50 */
   padding: 1rem;
   border-radius: 0.75rem;
+  color: #111; /* black text for visibility */
 }
 .result-error {
   padding: 1.5rem;

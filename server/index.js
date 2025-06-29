@@ -38,27 +38,34 @@ app.post('/upload', upload.single('file'), async (req, res) => {
 
   try {
     let text = '';
+    let fileUrl = '';
 
     if (ext === '.pdf') {
       const dataBuffer = fs.readFileSync(filePath);
       const pdfData = await pdfParse(dataBuffer);
       text = pdfData.text;
+      // Provide a URL to access the PDF file
+      fileUrl = `/uploads/${path.basename(filePath)}`;
     } else if (ext === '.docx') {
       const result = await mammoth.extractRawText({ path: filePath });
       text = result.value;
+      fs.unlinkSync(filePath); // Cleanup
     } else if (ext === '.txt') {
       text = fs.readFileSync(filePath, 'utf-8');
+      fs.unlinkSync(filePath); // Cleanup
     } else {
       return res.status(400).json({ error: 'Unsupported file type.' });
     }
 
-    fs.unlinkSync(filePath); // Cleanup
-    res.json({ text, originalname: file.originalname });
+    res.json({ text, originalname: file.originalname, fileUrl });
   } catch (err) {
     console.error('Extraction error:', err);
     res.status(500).json({ error: 'Text extraction failed.' });
   }
 });
+
+// Serve static files from uploads directory
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // ===== Amazon Polly TTS + Direct MP3 Stream =====
 app.post('/tts', async (req, res) => {
