@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDropzone } from 'react-dropzone';
 import axios from 'axios';
@@ -18,7 +18,14 @@ function UploadPage() {
       setIsLoading(true);
       try {
         const res = await axios.post('http://localhost:5000/upload', formData);
-        navigate('/result', { state: { text: res.data.text, fileName: res.data.originalname } });
+        navigate('/result', {
+          state: {
+            text: res.data.text,
+            fileName: res.data.originalname,
+            audioUrl: res.data.audioUrl,
+            marksUrl: res.data.marksUrl,
+          },
+        });
       } catch (err) {
         console.error(err);
         alert('Upload failed.');
