@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Upload PDF</title>
+</head>
+<body>
+  <h1>Upload your PDF</h1>
+  <form id="uploadForm" enctype="multipart/form-data">
+    <input type="file" name="file" accept=".pdf" />
+    <button type="submit">Upload</button>
+  </form>
+
+  <h2>Extracted Text:</h2>
+  <pre id="output"></pre>
+
+  <script>
+    const form = document.getElementById('uploadForm');
+    const output = document.getElementById('output');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(form);
+
+      const res = await fetch('http://127.0.0.1:5000/upload', {
+        method: 'POST',
+        body: formData
+      });
+
+      const data = await res.json();
+
+      if (data.text) {
+        output.textContent = data.text;
+      } else {
+        output.textContent = data.error || 'Something went wrong.';
+      }
+    });
+  </script>
+</body>
+</html>
